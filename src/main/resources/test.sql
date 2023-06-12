@@ -1,14 +1,19 @@
 select * from employee;
-select first_name as Имя, last_name as Фамилия from employee;
-select * from employee where age < 30 or age > 50;
-select * from employee where age between 30 and  50;
-select first_name , last_name from employee
-order by first_name , last_name desc ;
-select * from employee where length(first_name) > 4;
-update employee set first_name = 'Marina' where id = 6;
-update employee set first_name = 'Nikolay' where id = 8;
-select first_name as Имя, sum(age) as Суммарный_возраст
-       from employee group by Имя;
-select first_name as Имя, min(age) from employee group by Имя;
-select first_name as Имя, max(age) as Максимальный_возраст_по_имени from employee
-group by Имя having count(first_name) > 1 order by 2;
+create table city (
+    city_id bigserial not null primary key , city_name varchar(60)
+);
+select * from city;
+drop table city;
+alter table employee
+    add foreign key (city_id) references city (city_id);
+
+insert into city (city_name) values ('Грозный');
+insert into city (city_name) values ('Иннополис');
+insert into city (city_name) values ('Москва');
+update employee set city_id = 3 where id = 6;
+select first_name, last_name , city_name from employee inner join city on employee.city_id = city.city_id;
+UPDATE employee SET  city_id = 2 WHERE ID = 6;
+UPDATE employee SET  city_id = 0 WHERE ID = 2;
+select first_name, last_name , city_name from employee RIGHT JOIN  city on employee.city_id = city.city_id;
+select first_name, last_name , city_name from employee FULL JOIN  city on employee.city_id = city.city_id;
+select first_name, last_name , city_name from employee CROSS JOIN  city;
